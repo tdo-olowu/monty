@@ -1,0 +1,11 @@
+
+
+1. monty is an interpreter for monty bytecode files.
+usage:
+	monty <file.m>
+
+While there is a line, read the line, parse it, execute the command and go to the next line.
+
+1. First step is to parse the bytecode.
+Consists of a command amongst a collection of commands, then a number.
+Ignore invalid commands, ignore everything after the opcode on same line
