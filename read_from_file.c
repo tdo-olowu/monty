@@ -2,7 +2,7 @@
 
 /**
  * read_from_file - read the monty file line by line.
- * PROTOCOL: while there's a line, read the line,
+ * PROTOCOL while there's a line, read the line,
  * parse it i.e. extract opcode and first n args, call appropriate function by name,
  * then move to next line.
  * @filename: the path of the file.
@@ -17,8 +17,9 @@ int read_from_file(char *filename)
 
 	char *opcode;
 	int oparg;
+	unsigned int line_num;
 
-	bytes_read = get_opcode(line, line_length, stdin);
+	bytes_read = read_line(line, line_length, stdin);
 	if (bytes_read >= 1)
 	{
 		argv = make_tokens(line);
@@ -41,7 +42,7 @@ int read_from_file(char *filename)
 	return (status);
 }
 
-
+/**
 {
 do {
 		bytes_read = getcmd(&cmdline, &cmdlen, stdin);
@@ -77,3 +78,4 @@ do {
 	cleanup(cmdline, envp);
 	exit(exit_stat);
 }
+**/

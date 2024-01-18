@@ -1,5 +1,6 @@
 #include "monty.h"
 
+
 /**
  * push - pushes an element to the stack
     Usage: push <int>
@@ -9,8 +10,16 @@
     You won’t have to deal with overflows. Use the atoi function
  * @n: the int to push to the stack
  * Return: status
+ *
+ * push_instr - pushes an element to the stack
+ * @stack: the stack
+ * @ln: the line number
+ * Return: none.
  */
-void push(char stack);
+void push_instr(stack_t **stack, unsigned int ln)
+{
+	printf("I'm push_instr on line %u\n", ln);
+}
 
 
 /**
@@ -21,7 +30,10 @@ void push(char stack);
  * @stack: the address of the stack.
  * Return: non.
  */
-void pall(char stack);
+void pall_instr(stack_t **stack, unsigned int ln)
+{
+	printf("I'm pall on line %u\n", ln);
+}
 
 
 /**
@@ -31,7 +43,10 @@ void pall(char stack);
  * @stack: address of stack
  * Return: nunn
  */
-void pint(char stack);
+void pint_instr(stack_t **stack, unsigned int ln)
+{
+	printf("I'm pint on line %u\n", ln);
+}
 
 
 /**
@@ -40,7 +55,10 @@ void pint(char stack);
  * if stack is empty, print the error message
  * "L<line_no>: can't pop an empty stack", then newline then EXIT_FAILURE
  */
-int pop(char stack);
+int pop_instr(stack_t **stack, unsigned int ln)
+{
+	printf("I'm pop on line %u\n", ln);
+}
 
 
 
@@ -50,7 +68,10 @@ int pop(char stack);
  * "L<line_no>: can't swap, stack too short" then newline then EXIT_FAILURE
  * Return: none.
  */
-void swap(char *stack);
+void swap_instr(stack_t **stack, unsigned int ln)
+{
+	printf("I'm swap on line %u\n", ln);
+}
 
 
 /**
@@ -63,7 +84,10 @@ void swap(char *stack);
  * "L<line>: can't add, stack too short" then newline then EXIT_FAILURE
  * Return: no idea.
  */
-void add(char stack);
+void add_instr(stack_t **stack, unsigned int ln)
+{
+	printf("I'm add on line %u\n", ln);
+}
 
 
 /**
@@ -71,4 +95,7 @@ void add(char stack);
  * @stack: plates.
  * Return: nay
  */
-void nop(char stack);
+void nop_instr(stack_t **stack, unsigned int ln)
+{
+	printf("I'm nop on line %u and I do nothing.\n", ln);
+}

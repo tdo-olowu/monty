@@ -7,6 +7,8 @@
 #include <ctype.h>
 
 
+extern int current_value;
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
