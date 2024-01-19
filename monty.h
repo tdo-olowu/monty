@@ -1,14 +1,18 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
+#include <unistd.h>
 #include <ctype.h>
+#include <fcntl.h>
+#include <sys/types.h>
 
 
 extern unsigned int line_num;
+extern char *current_line;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -48,10 +52,11 @@ void read_from_file(char *, stack_t *, FILE *);
 
 /* LINE PARSING */
 char **make_tokens(char *, char *);
-int count_args(char **);
-ssize_t readline(char *, size_t *, FILE *);
+size_t count_args(char **);
+ssize_t read_line(char **, size_t *, FILE *);
 int convert_to_int(char *);
 int get_arg(unsigned int);
+char *_strdup(const char *);
 
 
 /* STACK HANDLING */
@@ -60,13 +65,14 @@ void free_stack(stack_t *);
 
 
 /* INSTRUCTIONS */
-void (*get_instruction(char *))(stack_t *, unsigned int);
-void push_instr(stack_t *, unsigned int);
-void pall_instr(stack_t *, unsigned int);
-void pint_instr(stack_t *, unsigned int);
-void pop_instr(stack_t *, unsigned int);
-void swap_instr(stack_t *, unsigned int);
-void add_instr(stack_t *, unsigned int);
+void (*get_instruction(char *))(stack_t **, unsigned int);
+void push_instr(stack_t **, unsigned int);
+void pall_instr(stack_t **, unsigned int);
+void pint_instr(stack_t **, unsigned int);
+void pop_instr(stack_t **, unsigned int);
+void swap_instr(stack_t **, unsigned int);
+void add_instr(stack_t **, unsigned int);
+void nop_instr(stack_t **, unsigned int);
 
 
 /* MEMORY MANAGEMENT */

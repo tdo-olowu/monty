@@ -6,6 +6,7 @@
 #define WIN 0
 #define FAIL -1
 #define UNKNOWN "L%u: unknown instruction %s\n"
+#define BUF_SIZE 1024
 
 unsigned int line_num = 0;
 
@@ -17,7 +18,7 @@ unsigned int line_num = 0;
  * @fobj: pointer to FILE object
  * Return: nothing. will exit with proper status.
  */
-void read_from_file(char *filename, stack_t *instr_stack, FILE *fobj)
+void read_from_file(char *filename, stack_t *instr_stack, int file_dsc)
 {
 	int eval = RUN, exit_stat = FAIL;
 	size_t line_length = 0;
@@ -27,7 +28,7 @@ void read_from_file(char *filename, stack_t *instr_stack, FILE *fobj)
 	(void)filename;
 
 	do {
-		bytes_read = read_line(&line, &line_length, fobj);
+		bytes_read = getline(&line, &line_length, fobj);
 		if (bytes_read < 0)
 		{
 			if (feof(stdin))
@@ -52,10 +53,33 @@ void read_from_file(char *filename, stack_t *instr_stack, FILE *fobj)
 			else
 				run_instr(&instr_stack, line_num);
 		}
-		/*free_table(argv);*/
+		free_table(argv);
 	} while (eval == RUN);
 	cleanup(line, argv);
 
 	if (exit_stat == FAIL)
 		exit(EXIT_FAILURE);
 }
+
+/*
+#include <fcntl.h>
+
+int main() {
+    char buffer[MAX_LINE_SIZE];
+    ssize_t bytes_read;
+
+    while ((bytes_read = read(file_descriptor, buffer, sizeof(buffer))) > 0) {
+        // Process the content of the buffer (which may contain multiple lines)
+        // You can iterate through the buffer to find line breaks and process lines accordingly
+        for (ssize_t i = 0; i < bytes_read; i++) {
+            if (buffer[i] == '\n') {
+                // Process the line
+                // ...
+            }
+        }
+    }
+
+    close(file_descriptor);
+    return 0;
+}
+*/

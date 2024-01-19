@@ -10,44 +10,25 @@
  */
 ssize_t read_line(char **buf, size_t *lenptr, FILE *filestr)
 {
-	char ch;
-	ssize_t bytes_read = 0;
-	size_t i = 0, bufsize = *lenptr;
-	(void)bytes_read;
+	int i;
+	char blank = ' ';
+	ssize_t bytes_read;
 
-	if (buf == NULL || lenptr == NULL)
+	bytes_read = getline(buf, lenptr, filestr);
+	if (bytes_read >= 0)
 	{
-		perror("Invalid argument\n");
-		return (-1);
-	}
-	if (*buf == NULL)
-	{
-		*buf = malloc(bufsize * sizeof(char));
-		if (*buf == NULL)
+		for (i = 0 ; (*buf)[i] == blank ; ++i)
+			;
+		for (; (*buf)[i] != '\n' ; ++i)
 		{
-			perror("Couldn't allocate memory");
-			exit(EXIT_FAILURE);
+			/* read opcode and arg */
 		}
+		(*buf)[i] = '\0';
+		bytes_read -= 1;
 	}
-	while (((ch = fgetc(filestr)) != EOF) && (ch != '\n'))
-	{
-		if (i >= bufsize - 1)
-		{
-			bufsize += bufsize;
-			*buf = realloc(*buf, bufsize);
-			if (*buf == NULL)
-				exit(EXIT_FAILURE);
-		}
-	}
-	(*buf)[i++] = (char)ch;
-	(*buf)[i] = '\0';
-	*lenptr = bufsize;
 
-	if ((ch == EOF) && (i == 0))
-		return (-1);
-	return (i);
+	return (bytes_read);
 }
-
 
 
 /**
@@ -80,7 +61,7 @@ char **make_tokens(char *str, char *delim)
 				return (NULL);
 			}
 		}
-		tokens[i] = _strdup(temp);
+		tokens[i] = strdup(temp);
 		if (tokens[i] == NULL)
 		{
 			perror("couldn't parse all input.");

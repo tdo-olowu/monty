@@ -35,7 +35,7 @@ void push_instr(stack_t **stack, unsigned int ln)
 		}
 	}
 
-	print("In push on line %u\n", ln);
+	printf("In push on line %u\n", ln);
 }
 
 
@@ -48,7 +48,6 @@ void push_instr(stack_t **stack, unsigned int ln)
  */
 void pall_instr(stack_t **stack, unsigned int ln)
 {
-	int value;
 	char *fmt = "%d\n";
 	stack_t *node;
 
