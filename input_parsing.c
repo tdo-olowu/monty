@@ -10,23 +10,24 @@
  */
 ssize_t read_line(char **buf, size_t *lenptr, FILE *filestr)
 {
-        int i;
-        char prev_ch, ch;
-        ssize_t bytes_read;
+	int i;
+	char prev_ch, ch;
+	ssize_t bytes_read;
 
-        bytes_read = getline(buf, lenptr, filestr);
-        if (bytes_read >= 0)
-        {
-                for (i = 0 ; (*buf)[i] == blank ; ++i);
-                for (; (*buf)[i] != '\n' ; ++i)
-                {
-                        /* read opcode and arg */
-                }
-                (*buf)[i] = '\0';
-                bytes_read -= 1;
-        }
+	bytes_read = getline(buf, lenptr, filestr);
+	if (bytes_read >= 0)
+	{
+		for (i = 0 ; (*buf)[i] == blank ; ++i)
+			;
+		for (; (*buf)[i] != '\n' ; ++i)
+		{
+			/* read opcode and arg */
+		}
+		(*buf)[i] = '\0';
+		bytes_read -= 1;
+	}
 
-        return (bytes_read);
+	return (bytes_read);
 }
 
 
@@ -83,24 +84,24 @@ char **make_tokens(char *str, char *delim)
  */
 void (*get_instruction(char *cmd_name))(stack_t **, unsigned int)
 {
-        int i, range;
-        char *bin_name;
-        void (*bin_instr)(stack_t **, unsigned int);
-        instruction_t instr_map[] = {{"push", push_instr}, {"pall", pall_instr},
-                                     {"pint", pint_instr}, {"pop", pop_instr},
-                                     {"swap", swap_instr}, {"add", add_instr},
-                                     {"nop", nop_instr}};
+	int i, range;
+	char *bin_name;
+	void (*bin_instr)(stack_t **, unsigned int);
+	instruction_t instr_map[] = {{"push", push_instr}, {"pall", pall_instr},
+				     {"pint", pint_instr}, {"pop", pop_instr},
+				     {"swap", swap_instr}, {"add", add_instr},
+				     {"nop", nop_instr}};
 
-        range = sizeof(instr_map) / sizeof(instruction_t);
-        for (i = 0 ; i < range ; ++i)
-        {
-                bin_name = (instr_map[i]).opcode;
-                bin_instr = (instr_map[i]).f;
-                if (strcmp(cmd_name, bin_name) == 0)
-                        return (bin_instr);
-        }
+	range = sizeof(instr_map) / sizeof(instruction_t);
+	for (i = 0 ; i < range ; ++i)
+	{
+		bin_name = (instr_map[i]).opcode;
+		bin_instr = (instr_map[i]).f;
+		if (strcmp(cmd_name, bin_name) == 0)
+			return (bin_instr);
+	}
 
-        return (NULL);
+	return (NULL);
 }
 
 
@@ -127,10 +128,9 @@ size_t count_args(char **argv)
 }
 
 
+
 /**
  * convert_to_int - convert a string to integer
- * this is specifically for is_exit to use.
- * use strtol
  * @n: integer as string
  * Return: -1 if n is not proper integer.
  */

@@ -9,6 +9,7 @@
 int main(int argc, char **argv)
 {
 	char *filename;
+	FILE *file;
 	stack_t *instruction_stack = new_stack();
 
 	if (argc != 2)
@@ -23,8 +24,15 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
+	file = fopen(filename, "r");
+	if (file == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", filename);
+		exit(EXIT_FAILURE);
+	}
+	read_from_file(filename, instruction_stack, file);
 
-	read_from_file(filename, instruction_stack);
+	fclose(file);
 	free_stack(instruction_stack);
 
 	return (0);

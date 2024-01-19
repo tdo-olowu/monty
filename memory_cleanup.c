@@ -20,14 +20,6 @@ void free_table(char **table)
 }
 
 
-/**
- * free_list - free the list
- * @stack: the stack to be freed.
- * Return: no return, just free memory occupied by the linkedlist.
- */
-void free_list(stack_t *stack);
-
-
 
 /**
  * cleanup - a function for convenience.
