@@ -4,29 +4,28 @@
  * main - main control for the monty
  * @argc: the argument count
  * @argv: list of arguments. should be opcodes
- * Return: EXIT_SUCCESS or EXIT_FAILURE
+ * Return: 0 for success.
  */
 int main(int argc, char **argv)
 {
-	int success;
 	char *filename;
+	stack_t *instruction_stack = new_stack();
 
 	if (argc != 2)
 	{
-		fprintf("USAGE: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	filename = argv[1];
 	/* try F_OK or R_OK || W_OK || X_OK if checks are failin */
 	if (access(filename, R_OK) < 0)
 	{
-		fprintf("Error: Can't open file %s\n", filename);
+		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
 
-	success = read_from_file(filename);
-	if (success < 0)
-		exit(EXIT_FAILURE);
+	read_from_file(filename, instruction_stack);
+	free_stack(instruction_stack);
 
-	return (success);
+	return (0);
 }

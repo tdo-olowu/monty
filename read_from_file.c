@@ -1,81 +1,59 @@
 #include "monty.h"
 
+#define RUN 0
+#define STOP 1
+#define BLANK " "
+#define WIN 0
+
+line_number = 0;
+
 /**
  * read_from_file - read the monty file line by line.
- * PROTOCOL while there's a line, read the line,
- * parse it i.e. extract opcode and first n args, call appropriate function by name,
- * then move to next line.
+ * this will populate the stack as program runs, dep on command received.
  * @filename: the path of the file.
- * Return: -1 if any error occured, 0 if no big deal.
+ * @instr_stack: the stack to hold them instructions
+ * Return: nothing. will exit with proper status.
  */
-int read_from_file(char *filename)
+void read_from_file(char *filename, stack_t *instr_stack)
 {
-	int argc = 0, status = -1;
+	int eval = RUN, exit_stat = -1;
+	int argc = 0;
 	size_t line_length = 0;
 	ssize_t bytes_read = -1;
 	char *line = NULL, **argv = NULL;
+	void (*run_instr)(stack_t **, unsigned int);
 
 	char *opcode;
-	int oparg;
-	unsigned int line_num;
 
-	bytes_read = read_line(line, line_length, stdin);
-	if (bytes_read >= 1)
-	{
-		argv = make_tokens(line);
-		argc = count_args(argv);
-		/* just pass the first cmd and the arg to the function finder */
-		if (argc >= 2)
-		{
-			/* let function finder handle it, incl nop */
-			opcode = argv[0];
-			oparg = convert_to_int(argv[1]);
-		}
-		else if (argc == 1)
-		{
-			/* only reason for this is to avoid segfault */
-			opcode = argv[0];
-			/* call the function finder */
-		}
-	}
-
-	return (status);
-}
-
-/**
-{
-do {
-		bytes_read = getcmd(&cmdline, &cmdlen, stdin);
+	do {
+		bytes_read = read_line(line, line_length, stdin);
 		if (bytes_read < 0)
 		{
 			if (feof(stdin))
-			{
-				exit_stat = 0;
-				break;
-			}
+				exit_stat = WIN;
+			else
+				exit_stat = -1;
+			eval = STOP;
 		}
 		else
 		{
-			argv = make_tokens(cmdline, " ");
+			line_number += 1;
+			argv = make_tokens(line, BLANK);
 			if (argv == NULL)
 				continue;
-			exit_stat = is_exit(argv);
-			if (exit_stat >= 0)
+			if (count_args(argv) > 0)
 			{
-				free_table(argv);
-				break;
+				run_instr = get_instruction(argv[0]);
+				run_instr(master_stack, line_num);
 			}
-			if (exit_stat == -10)
-			{
-				free_table(argv);
-				eval = 1;
-				continue;
-			}
-			eval = evaluate(argv, envp);
-			free_table(argv);
 		}
-	} while (eval == 1);
-	cleanup(cmdline, envp);
-	exit(exit_stat);
+		free_table(argv);
+	} while (eval == RUN);
+
+	cleanup(line, argv);
+
+	if (exit_stat == WIN)
+		exit(EXIT_SUCCESS);
+	else
+		exit(EXIT_FAILURE);
 }
-**/

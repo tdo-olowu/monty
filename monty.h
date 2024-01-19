@@ -4,10 +4,11 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
 
-extern int current_value;
+extern unsigned int line_number;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)

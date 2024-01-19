@@ -18,8 +18,35 @@
  */
 void push_instr(stack_t **stack, unsigned int ln)
 {
-	printf("I'm push_instr on line %u\n", ln);
+	int arg = get_arg(ln);
+
+	/* check if arg is int or arg is given to push */
+	stack_t *new_tail, *old_tail;
+
+	if (stack != NULL)
+	{
+		new_tail = malloc(sizeof(stack_t));
+		if (new_tail != NULL)
+		{
+			new_tail->prev = NULL;
+			new_tail->next = NULL;
+			new_tail->n = arg;
+			if (*stack == NULL)
+				*stack = new_tail;
+			else
+			{
+				old_tail = *stack;
+				while (old_tail->next != NULL)
+					old_tail = old_tail->next;
+				old_tail->next = new_tail;
+				new_tail->prev = old_tail;
+			}
+		}
+	}
+
+	print("In push on line %u\n", ln);
 }
+
 
 
 /**
@@ -32,8 +59,29 @@ void push_instr(stack_t **stack, unsigned int ln)
  */
 void pall_instr(stack_t **stack, unsigned int ln)
 {
+	int value;
+	char *fmt = "%d\n";
+	stack_t *node;
+
+	if (stack != NULL)
+	{
+		node = *stack;
+		if (node != NULL)
+		{
+			while (node->next !+ NULL)
+				node = node->next;
+
+			while (node != NULL)
+			{
+				printf(fmt, node->n);
+				node = node->prev;
+			}
+		}
+	}
+
 	printf("I'm pall on line %u\n", ln);
 }
+
 
 
 /**
@@ -45,18 +93,56 @@ void pall_instr(stack_t **stack, unsigned int ln)
  */
 void pint_instr(stack_t **stack, unsigned int ln)
 {
+	stack_t *node;
+	char *err_msg = "L%u: can't pint, stack empty\n";
+
+	if (stack != NULL)
+	{
+		node = *stack;
+		if (node == NULL)
+		{
+			fprintf(stderr, err_msg, ln);
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			while (node->next != NULL)
+				node = node->next;
+			printf("%d\n", node->n);
+		}
+	}
+
 	printf("I'm pint on line %u\n", ln);
 }
 
 
+
 /**
- * pop - remove and return top item from a stack.
+ * pop - remove top item from a stack.
  * Usage: pop.
  * if stack is empty, print the error message
  * "L<line_no>: can't pop an empty stack", then newline then EXIT_FAILURE
  */
 int pop_instr(stack_t **stack, unsigned int ln)
 {
+	stack_t *crnt_node, *prev_node;
+	char *err_msg = "L%u: can't pop an empty stack\n";
+
+	if (stack != NULL)
+	{
+		crnt_node = *stack;
+		if (crnt_node == NULL)
+		{
+			fprintf(stderr, err_msg, ln);
+			exit(EXIT_FAILURE);
+		}
+		while (crnt_node->next != NULL)
+			crnt_node = crnt_node->next;
+		prev_node = crnt_node->prev;
+		prev_node->next = NULL;
+		free(crnt_node);
+	}
+
 	printf("I'm pop on line %u\n", ln);
 }
 
@@ -70,8 +156,36 @@ int pop_instr(stack_t **stack, unsigned int ln)
  */
 void swap_instr(stack_t **stack, unsigned int ln)
 {
+	stack_t *curr_node, *prev_node;
+	stack_t *prev_prev_node, *next_node;
+	char *err_msg = "L%d: can't swap, stack too short\n";
+
+	if (stack != NULL)
+	{
+		curr_node = *stack;
+		while (curr_node->next != NULL)
+			curr_node = curr_node->next;
+		prev_node = curr_node->prev;
+		if (prev_node == NULL)
+		{
+			fprintf(stderr, err_msg, ln);
+			exit(EXIT_FAILURE);
+		}
+		prev_prev_node = prev_node->prev;
+		next_node = curr_node->next;
+		if (prev_prev_node != NULL)
+			prev_prev_node->next = curr_node;
+		if (next_node != NULL)
+			next_node->prev = prev_node;
+		prev_node->prev = curr_node;
+		prev_node->next = next_node;
+		curr_node->prev = prev_prev_node;
+		curr_node->next = prev_node;
+	}
+
 	printf("I'm swap on line %u\n", ln);
 }
+
 
 
 /**
@@ -86,8 +200,28 @@ void swap_instr(stack_t **stack, unsigned int ln)
  */
 void add_instr(stack_t **stack, unsigned int ln)
 {
+	stack_t *curr_node, *prev_node;
+	char *err_msg = "L%u: can't add, stack too short\n";
+
+	if (stack != NULL)
+	{
+		curr_node = *stack;
+		while (curr_node->next != NULL)
+			curr_node = curr_node->next;
+		prev_node = curr_node->prev;
+		if (prev_node == NULL)
+		{
+			fprintf(stderr, err_msg, ln);
+			exit(EXIT_FAILURE);
+		}
+		prev_node->n += curr_node->n;
+		prev_node->next = NULL;
+		free(curr_node);
+	}
+
 	printf("I'm add on line %u\n", ln);
 }
+
 
 
 /**
@@ -98,4 +232,6 @@ void add_instr(stack_t **stack, unsigned int ln)
 void nop_instr(stack_t **stack, unsigned int ln)
 {
 	printf("I'm nop on line %u and I do nothing.\n", ln);
+	(void)stack;
+	(void)ln;
 }
