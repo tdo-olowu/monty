@@ -9,10 +9,22 @@
  */
 void push_instr(stack_t **stack, unsigned int ln)
 {
-	int arg = ln;
+	char *arg = NULL;
+	stack_t *new_tail, *old_tail;
 
 	/* check if arg is int or arg is given to push */
-	stack_t *new_tail, *old_tail;
+	if (count_args(line_tok) < 2) 
+	{
+		fprintf(stdout, "L%u: usage: push integer\n", ln);
+		exit(EXIT_FAILURE);
+	}
+	arg = line_tok[1];
+	printf("\targ is %s\n", arg); /* DEBUG */
+	if (is_an_int(arg) == 0)
+	{
+		fprintf(stdout, "L%u: usage: push integer\n", ln);
+		exit(EXIT_FAILURE);
+	}
 
 	if (stack != NULL)
 	{
@@ -21,7 +33,8 @@ void push_instr(stack_t **stack, unsigned int ln)
 		{
 			new_tail->prev = NULL;
 			new_tail->next = NULL;
-			new_tail->n = arg;
+			/* not that robust tbh. what if convt fails? */
+			new_tail->n = convert_to_int(arg);
 			if (*stack == NULL)
 				*stack = new_tail;
 			else
@@ -35,7 +48,7 @@ void push_instr(stack_t **stack, unsigned int ln)
 		}
 	}
 
-	printf("In push on line %u\n", ln);
+	printf("\tIn push on line %u\n", ln); /* DEBUG */
 }
 
 

@@ -12,7 +12,7 @@ stack_t *new_stack(void)
 	if (stack == NULL)
 	{
 		fprintf(stderr, "Error: Insufficient memory\n");
-		exit(EXIT_FAILURE);
+		/* should we exit or return NULL? */
 	}
 
 	return (stack);

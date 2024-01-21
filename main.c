@@ -1,5 +1,6 @@
 #include "monty.h"
 
+
 /**
  * main - main control for the monty
  * @argc: the argument count
@@ -30,7 +31,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", filename);
 		exit(EXIT_FAILURE);
 	}
-	read_from_file(filename, instruction_stack, file);
+	read_from_file(instruction_stack, file);
 
 	fclose(file);
 	free_stack(instruction_stack);

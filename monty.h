@@ -1,6 +1,7 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,8 +12,7 @@
 #include <sys/types.h>
 
 
-extern unsigned int line_num;
-extern char *current_line;
+extern char **line_tok;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -47,16 +47,17 @@ typedef struct instruction_s
 
 
 /* FILE HANDLING */
-void read_from_file(char *, stack_t *, FILE *);
+void read_from_file(stack_t *, FILE *);
 
 
 /* LINE PARSING */
+void nlinestrip(char **);
 char **make_tokens(char *, char *);
 size_t count_args(char **);
 ssize_t read_line(char **, size_t *, FILE *);
 int convert_to_int(char *);
-int get_arg(unsigned int);
 char *_strdup(const char *);
+int is_an_int(char *);
 
 
 /* STACK HANDLING */
@@ -78,6 +79,10 @@ void nop_instr(stack_t **, unsigned int);
 /* MEMORY MANAGEMENT */
 void free_table(char **);
 void cleanup(char *, char **);
+
+
+/* TESTING AND DEBUGGING */
+void print_tokens(char **);
 
 
 

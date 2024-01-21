@@ -2,98 +2,46 @@
 
 
 /**
- * read_line - read opcodes
- * @buf: pointer to the input buffer
- * @lenptr: pointer to length of buffer
- * @filestr: filestream pointer.
- * Return: number of bytes read.
- */
-ssize_t read_line(char **buf, size_t *lenptr, FILE *filestr)
-{
-	char ch;
-	ssize_t bytes_read = 0;
-	size_t i = 0, bufsize = *lenptr;
-	(void)bytes_read;
-
-	if (buf == NULL || lenptr == NULL)
-	{
-		perror("Invalid argument\n");
-		return (-1);
-	}
-	if (*buf == NULL)
-	{
-		*buf = malloc(bufsize * sizeof(char));
-		if (*buf == NULL)
-		{
-			perror("Couldn't allocate memory");
-			exit(EXIT_FAILURE);
-		}
-	}
-	while (((ch = fgetc(filestr)) != EOF) && (ch != '\n'))
-	{
-		if (i >= bufsize - 1)
-		{
-			bufsize += bufsize;
-			*buf = realloc(*buf, bufsize);
-			if (*buf == NULL)
-				exit(EXIT_FAILURE);
-		}
-	}
-	(*buf)[i++] = (char)ch;
-	(*buf)[i] = '\0';
-	*lenptr = bufsize;
-
-	if ((ch == EOF) && (i == 0))
-		return (-1);
-	return (i);
-}
-
-
-
-/**
  * make_tokens - tokenise a null-terminated string.
  * @str: the string to tokenise
  * @delim: the delimiter.
- * Return: array of strings i.e. the tokens.
+ * Return: array of strings aka the tokens.
  */
 char **make_tokens(char *str, char *delim)
 {
-	int i, buf = 64, bufsize = 64;
-	char *temp, **tokens;
+	int tok_count = 2;
+	int i;
+	char *temp = NULL, **tokens = NULL;
 
+	printf("Inside make_tokens. string is **%s**\n", str);
 	if (str == NULL)
 		return (NULL);
-	tokens = malloc(buf * sizeof(char **));
+	tokens = malloc((tok_count + 1) * sizeof(char *));
 	if (tokens == NULL)
+	{
+		puts("Could not tokenise!\n");
 		return (NULL);
+	}
 
 	temp = strtok(str, delim);
-	for (i = 0 ; temp != NULL ; ++i)
+	for (i = 0; temp != NULL ; ++i)
 	{
-		if (i >= bufsize)
-		{
-			bufsize += buf;
-			tokens = realloc(tokens, bufsize * sizeof(char **));
-			if (tokens == NULL)
-			{
-				free_table(tokens);
-				return (NULL);
-			}
-		}
-		tokens[i] = _strdup(temp);
+		/* don't ask for more memory */
+		tokens[i] = strdup(temp);
 		if (tokens[i] == NULL)
 		{
-			perror("couldn't parse all input.");
+			fprintf(stdout, "Could not tokenize ):\n");
+			/* btw, why does free_table work here? */
 			free_table(tokens);
 			return (NULL);
 		}
 		temp = strtok(NULL, delim);
 	}
 	tokens[i] = NULL;
+	print_tokens(tokens); /* DEBUG */
 
 	return (tokens);
 }
-
 
 
 /**
@@ -111,6 +59,8 @@ void (*get_instruction(char *cmd_name))(stack_t **, unsigned int)
 				     {"swap", swap_instr}, {"add", add_instr},
 				     {"nop", nop_instr}};
 
+	printf("Command name: %s\n", cmd_name); /* DEBUG */
+
 	range = sizeof(instr_map) / sizeof(instruction_t);
 	for (i = 0 ; i < range ; ++i)
 	{
@@ -127,6 +77,8 @@ void (*get_instruction(char *cmd_name))(stack_t **, unsigned int)
 
 /**
  * count_args - count the number of arguments in an argv.
+ * an improvement would be to return -1 if argv == NULL to
+ * distinguish from when argv != NULL but its first arg is NULL.
  * @argv: list of string.
  * Return: number of arguments.
  */
@@ -149,19 +101,17 @@ size_t count_args(char **argv)
 
 
 /**
- * convert_to_int - convert a string to integer
- * @n: integer as string
- * Return: -1 if n is not proper integer.
+ * read_line - read opcodes
+ * @buf: pointer to the buffer i.e. memry where line is stored.
+ * @lenptr: pointer to length of buffer
+ * @filestr: filestream pointer.
+ * Return: number of bytes read.
  */
-int convert_to_int(char *n)
+ssize_t read_line(char **buf, size_t *lenptr, FILE *filestr)
 {
-	long int value, failure = -1;
-	const char *str = (const char *)n;
-	char *endp;
+	ssize_t bytes_read = -1;
 
-	value = strtol(str, &endp, 10);
-	if (*endp != '\0')
-		return (failure);
+	bytes_read = getline(buf, lenptr, filestr);
 
-	return ((int)value);
+	return (bytes_read);
 }
