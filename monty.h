@@ -65,7 +65,9 @@ int is_an_int(char *);
 
 /* STACK HANDLING */
 stack_t *new_stack(void);
+void stack_memset(stack_t *);
 void free_stack(stack_t *);
+void stack_append(stack_t **, int);
 
 
 /* INSTRUCTIONS */

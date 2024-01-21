@@ -28,7 +28,7 @@ char **make_tokens(char *str, char *delim)
 		tokens[i] = strdup(temp);
 		if (tokens[i] == NULL)
 		{
-			fprintf(stdout, "Could not tokenize ):\n");
+			fprintf(stderr, "Could not tokenize ):\n");
 			/* btw, why does free_table work here? */
 			free_table(tokens);
 			return (NULL);

@@ -3,6 +3,7 @@
 
 /**
  * push_instr - pushes an element to the stack
+ * add node end stack.
  * @stack: the stack
  * @ln: the line number
  * Return: none.
@@ -10,41 +11,19 @@
 void push_instr(stack_t **stack, unsigned int ln)
 {
 	char *arg = NULL;
-	stack_t *new_tail = NULL, *old_tail = NULL;
 
 	if (count_args(line_tok) < 2)
 	{
-		fprintf(stdout, "L%u: usage: push integer\n", ln);
+		fprintf(stderr, "L%u: usage: push integer\n", ln);
 		exit(EXIT_FAILURE);
 	}
 	arg = line_tok[1];
 	if (is_an_int(arg) == NAY)
 	{
-		fprintf(stdout, "L%u: usage: push integer\n", ln);
+		fprintf(stderr, "L%u: usage: push integer\n", ln);
 		exit(EXIT_FAILURE);
 	}
-
-	if (stack != NULL)
-	{
-		new_tail = malloc(sizeof(stack_t));
-		if (new_tail != NULL)
-		{
-			new_tail->prev = NULL;
-			new_tail->next = NULL;
-			/* not that robust tbh. what if convt fails? */
-			new_tail->n = convert_to_int(arg);
-			if (*stack == NULL)
-				*stack = new_tail;
-			else
-			{
-				old_tail = *stack;
-				while (old_tail->next != NULL)
-					old_tail = old_tail->next;
-				old_tail->next = new_tail;
-				new_tail->prev = old_tail;
-			}
-		}
-	}
+	stack_append(stack, convert_to_int(arg));
 }
 
 
@@ -122,6 +101,8 @@ void pop_instr(stack_t **stack, unsigned int ln)
 	stack_t *crnt_node, *prev_node;
 	char *err_msg = "L%u: can't pop an empty stack\n";
 
+	printf("about to pop stack...\n");
+
 	if (stack != NULL)
 	{
 		crnt_node = *stack;
@@ -136,4 +117,6 @@ void pop_instr(stack_t **stack, unsigned int ln)
 		prev_node->next = NULL;
 		free(crnt_node);
 	}
+
+	printf("stack popped\n");
 }

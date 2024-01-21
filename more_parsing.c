@@ -17,7 +17,7 @@ char *_strdup(const char *src)
 	dest = malloc(lngth * sizeof(char));
 	if (dest == NULL)
 	{
-		fprintf(stdout, "Could not duplicate string\n");
+		fprintf(stderr, "Could not duplicate string\n");
 		/* exit(EXIT_FAILURE); not sure we should exit */
 		return (NULL);
 	}
@@ -76,7 +76,7 @@ int convert_to_int(char *n)
 	value = strtol(str, &endp, 10);
 	if (*endp != '\0')
 	{
-		fprintf(stdout, "Could not convert to integer\n");
+		fprintf(stderr, "Could not convert to integer\n");
 		/* should we exit or return something? */
 		exit(EXIT_FAILURE);
 	}
