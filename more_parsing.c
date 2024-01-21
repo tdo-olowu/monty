@@ -108,3 +108,35 @@ void nlinestrip(char **line)
 		}
 	}
 }
+
+
+/**
+ * blank_scrub - shift a string so that no leading wspace.
+ * that's been causing trouble, too.
+ * @line: the line to shift
+ * Return: nothing, modify via pointer.
+ */
+void blank_scrub(char **line)
+{
+	int i, sh;
+	char *temp;
+
+	if ((line != NULL) && ((*line) != NULL))
+	{
+		/* compute the shift */
+		sh = 0;
+		temp = *line;
+		while ((temp[sh] != '\0') && (isspace(temp[sh])))
+			++sh;
+		if (temp[sh] == '\0')
+			(*line)[0] = '\0';
+		else
+		{
+			if (sh > 0)
+			{
+				for (i = 0; temp[i] != '\0' ; ++i)
+					(*line)[i] = (*line)[i + sh];
+			}
+		}
+	}
+}

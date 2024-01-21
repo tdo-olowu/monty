@@ -54,6 +54,7 @@ void read_from_file(stack_t *, FILE *);
 
 /* LINE PARSING */
 void nlinestrip(char **);
+void blank_scrub(char **);
 char **make_tokens(char *, char *);
 size_t count_args(char **);
 ssize_t read_line(char **, size_t *, FILE *);

@@ -25,7 +25,6 @@ void read_from_file(stack_t *instr_stack, FILE *fobj)
 	void (*run_instr)(stack_t **, unsigned int);
 
 	do {
-		/* read_line or getline? */
 		bytes_read = read_line(&cr_line, &line_length, fobj);
 		if (bytes_read < 0)
 			break;
@@ -33,6 +32,7 @@ void read_from_file(stack_t *instr_stack, FILE *fobj)
 		if (bytes_read == 0)
 			continue;
 		nlinestrip(&cr_line);
+		blank_scrub(&cr_line);
 		/* printf("***\nline %u\n\t%s\n", line_num, cr_line); */
 		line_tok = make_tokens(cr_line, BLANK);
 		if (line_tok == NULL)
@@ -50,11 +50,8 @@ void read_from_file(stack_t *instr_stack, FILE *fobj)
 			else
 				run_instr(&instr_stack, line_num);
 		}
-		/* should I free the line_tok after each ln? */
-		/* or is it safe to overwrite same block of memry? */
 		free_table(line_tok);
 	} while (bytes_read >= 0);
-
 	free(cr_line);
 	if (bytes_read < 0)
 		exit_stat = (feof(stdin) ? WIN : FAIL);

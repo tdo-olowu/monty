@@ -10,10 +10,9 @@
 void push_instr(stack_t **stack, unsigned int ln)
 {
 	char *arg = NULL;
-	stack_t *new_tail, *old_tail;
+	stack_t *new_tail = NULL, *old_tail = NULL;
 
-	/* check if arg is int or arg is given to push */
-	if (count_args(line_tok) < 2) 
+	if (count_args(line_tok) < 2)
 	{
 		fprintf(stdout, "L%u: usage: push integer\n", ln);
 		exit(EXIT_FAILURE);

@@ -19,13 +19,10 @@ pall
 pop
 pall
 add
-pint
-pop
-add
-pint
-swap
-add
 pall
 nop
-nop
-nop
+            nop
+	    	nop
+	  nop
+	         			    pop
+					    pall
