@@ -33,7 +33,7 @@ void read_from_file(stack_t *instr_stack, FILE *fobj)
 		if (bytes_read == 0)
 			continue;
 		nlinestrip(&cr_line);
-		printf("current line is line %u\n***\n\t%s\n***\n", line_num, cr_line); /* DEBUG */
+		/* printf("***\nline %u\n\t%s\n", line_num, cr_line); */
 		line_tok = make_tokens(cr_line, BLANK);
 		if (line_tok == NULL)
 			continue;

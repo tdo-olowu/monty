@@ -35,8 +35,6 @@ void swap_instr(stack_t **stack, unsigned int ln)
 		curr_node->prev = prev_prev_node;
 		curr_node->next = prev_node;
 	}
-
-	printf("I'm swap on line %u\n", ln);
 }
 
 
@@ -67,8 +65,6 @@ void add_instr(stack_t **stack, unsigned int ln)
 		prev_node->next = NULL;
 		free(curr_node);
 	}
-
-	printf("I'm add on line %u\n", ln);
 }
 
 
@@ -81,7 +77,6 @@ void add_instr(stack_t **stack, unsigned int ln)
  */
 void nop_instr(stack_t **stack, unsigned int ln)
 {
-	printf("I'm nop on line %u and I do nothing.\n", ln);
 	(void)stack;
 	(void)ln;
 }

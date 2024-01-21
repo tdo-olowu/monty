@@ -9,14 +9,13 @@
  */
 char **make_tokens(char *str, char *delim)
 {
-	int tok_count = 2;
+	int arr_size = 3;
 	int i;
 	char *temp = NULL, **tokens = NULL;
 
-	printf("Inside make_tokens. string is **%s**\n", str);
 	if (str == NULL)
 		return (NULL);
-	tokens = malloc((tok_count + 1) * sizeof(char *));
+	tokens = malloc(arr_size * sizeof(char *));
 	if (tokens == NULL)
 	{
 		puts("Could not tokenise!\n");
@@ -24,9 +23,8 @@ char **make_tokens(char *str, char *delim)
 	}
 
 	temp = strtok(str, delim);
-	for (i = 0; temp != NULL ; ++i)
+	for (i = 0; (temp != NULL) && (i < arr_size - 1) ; ++i)
 	{
-		/* don't ask for more memory */
 		tokens[i] = strdup(temp);
 		if (tokens[i] == NULL)
 		{
@@ -38,7 +36,7 @@ char **make_tokens(char *str, char *delim)
 		temp = strtok(NULL, delim);
 	}
 	tokens[i] = NULL;
-	print_tokens(tokens); /* DEBUG */
+	/* print_tokens(tokens); */
 
 	return (tokens);
 }
@@ -58,8 +56,6 @@ void (*get_instruction(char *cmd_name))(stack_t **, unsigned int)
 				     {"pint", pint_instr}, {"pop", pop_instr},
 				     {"swap", swap_instr}, {"add", add_instr},
 				     {"nop", nop_instr}};
-
-	printf("Command name: %s\n", cmd_name); /* DEBUG */
 
 	range = sizeof(instr_map) / sizeof(instruction_t);
 	for (i = 0 ; i < range ; ++i)

@@ -15,8 +15,7 @@ void print_tokens(char **toks)
 	{
 		for (i = 0 ; toks[i] != NULL ; ++i)
 		{
-			puts(toks[i]);
-			putchar('\n');
+			printf("%s\n", toks[i]);
 		}
 	}
 }

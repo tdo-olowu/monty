@@ -36,23 +36,27 @@ char *_strdup(const char *src)
  */
 int is_an_int(char *str)
 {
-	int i, yes = 1, nay = 0;
+	int i;
 	char ch;
 
 	if (str == NULL)
-		return (nay);
+		return (NAY);
 	for (i = 0 ; str[i] != '\0' ; ++i)
 	{
 		ch = str[i];
 		if ((ch < '0') || (ch > '9'))
-			return (nay);
-		else if ((ch == '-') && (i > 0))
-			return (nay);
-		else if ((ch == '+') && (i > 0))
-			return (nay);
+		{
+			if ((ch == '-') || (ch == '+'))
+			{
+				if (i > 0)
+					return (NAY);
+			}
+			else
+				return (NAY);
+		}
 	}
 
-	return (yes);
+	return (YES);
 }
 
 

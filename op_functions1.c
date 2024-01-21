@@ -19,8 +19,7 @@ void push_instr(stack_t **stack, unsigned int ln)
 		exit(EXIT_FAILURE);
 	}
 	arg = line_tok[1];
-	printf("\targ is %s\n", arg); /* DEBUG */
-	if (is_an_int(arg) == 0)
+	if (is_an_int(arg) == NAY)
 	{
 		fprintf(stdout, "L%u: usage: push integer\n", ln);
 		exit(EXIT_FAILURE);
@@ -47,8 +46,6 @@ void push_instr(stack_t **stack, unsigned int ln)
 			}
 		}
 	}
-
-	printf("\tIn push on line %u\n", ln); /* DEBUG */
 }
 
 
@@ -61,8 +58,10 @@ void push_instr(stack_t **stack, unsigned int ln)
  */
 void pall_instr(stack_t **stack, unsigned int ln)
 {
+	/* BUGGY prints first in twice. */
 	char *fmt = "%d\n";
 	stack_t *node;
+	(void)ln;
 
 	if (stack != NULL)
 	{
@@ -72,15 +71,13 @@ void pall_instr(stack_t **stack, unsigned int ln)
 			while (node->next != NULL)
 				node = node->next;
 
-			while (node != NULL)
+			while (node->prev != NULL)
 			{
 				printf(fmt, node->n);
 				node = node->prev;
 			}
 		}
 	}
-
-	printf("I'm pall on line %u\n", ln);
 }
 
 
@@ -111,8 +108,6 @@ void pint_instr(stack_t **stack, unsigned int ln)
 			printf("%d\n", node->n);
 		}
 	}
-
-	printf("I'm pint on line %u\n", ln);
 }
 
 
@@ -142,6 +137,4 @@ void pop_instr(stack_t **stack, unsigned int ln)
 		prev_node->next = NULL;
 		free(crnt_node);
 	}
-
-	printf("I'm pop on line %u\n", ln);
 }
