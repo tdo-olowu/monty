@@ -55,6 +55,8 @@ void (*get_instruction(char *cmd_name))(stack_t **, unsigned int)
 	instruction_t instr_map[] = {{"push", push_instr}, {"pall", pall_instr},
 				     {"pint", pint_instr}, {"pop", pop_instr},
 				     {"swap", swap_instr}, {"add", add_instr},
+				     {"sub", sub_instr}, {"mul", mul_instr},
+				     {"div", div_instr}, {"mod", mod_instr},
 				     {"nop", nop_instr}};
 
 	range = sizeof(instr_map) / sizeof(instruction_t);

@@ -78,6 +78,10 @@ void pint_instr(stack_t **, unsigned int);
 void pop_instr(stack_t **, unsigned int);
 void swap_instr(stack_t **, unsigned int);
 void add_instr(stack_t **, unsigned int);
+void sub_instr(stack_t **, unsigned int);
+void mul_instr(stack_t **, unsigned int);
+void div_instr(stack_t **, unsigned int);
+void mod_instr(stack_t **, unsigned int);
 void nop_instr(stack_t **, unsigned int);
 
 

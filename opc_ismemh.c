@@ -136,3 +136,38 @@ void add_instr(stack_t **stack, unsigned int ln)
 		free(curr_node);
 	}
 }
+
+
+
+/**
+ * sub_instr - subs the top two elements of a stack.
+ * @stack: the stack.
+ * @ln: problematic troublesome line
+ * Return: void returns nothing.
+ */
+void sub_instr(stack_t **stack, unsigned int ln)
+{
+	stack_t *curr_node, *prev_node;
+	char *err_msg = "L%u: can't sub, stack too short\n";
+
+	if ((stack == NULL) || (*stack == NULL))
+	{
+		fprintf(stderr, err_msg, ln);
+		exit(EXIT_FAILURE);
+	}
+	if (*stack != NULL)
+	{
+		curr_node = *stack;
+		while (curr_node->next != NULL)
+			curr_node = curr_node->next;
+		prev_node = curr_node->prev;
+		if (prev_node == NULL)
+		{
+			fprintf(stderr, err_msg, ln);
+			exit(EXIT_FAILURE);
+		}
+		prev_node->n -= curr_node->n;
+		prev_node->next = NULL;
+		free(curr_node);
+	}
+}

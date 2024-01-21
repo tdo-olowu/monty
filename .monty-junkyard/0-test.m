@@ -9,6 +9,7 @@ push 1000
 push 10000
 push 100000
 push 1111111
+push 1010101010
 push 2222222
 push 333333
 push 4444
@@ -26,7 +27,7 @@ pop
 pall
 pop
 pall
-add
+div
 pall
 swap
 nop
@@ -36,20 +37,43 @@ nop
 	         			    pop
 					   pall
 			add
-			add
+			sub
 			pall
 			pop
 		swap
 			add
 			pall
 			pall
-			add
+		sub
 			pop
 			pall
-			add
+			mul
 			pall
 			add
 			pall
 			pop
 			pall
-			add
+
+
+	push 1
+	push 10
+	push 10000
+	push 1020202
+
+	push 292923
+pall
+
+sub
+
+pall
+push 2393232
+pint
+	mod
+	pint
+	push 12
+	div
+pall
+	mul
+pint
+	push 0
+	div
