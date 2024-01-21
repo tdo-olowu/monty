@@ -2,6 +2,71 @@
 
 
 /**
+ * push_instr - pushes an element to the stack
+ * add node end stack.
+ * @stack: the stack
+ * @ln: the line number
+ * Return: none.
+ */
+void push_instr(stack_t **stack, unsigned int ln)
+{
+	char *arg = NULL;
+
+	if (count_args(line_tok) < 2)
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", ln);
+		exit(EXIT_FAILURE);
+	}
+	arg = line_tok[1];
+	if (is_an_int(arg) == NAY)
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", ln);
+		exit(EXIT_FAILURE);
+	}
+	stack_append(stack, convert_to_int(arg));
+}
+
+
+
+/**
+ * pop_instr - remove top item from a stack.
+ * @stack: stack.
+ * @ln: line number.
+ * Return: none
+ */
+void pop_instr(stack_t **stack, unsigned int ln)
+{
+	stack_t *crnt_node, *prev_node;
+	char *err_msg = "L%u: can't pop an empty stack\n";
+
+	if (stack != NULL)
+	{
+		crnt_node = *stack;
+		if (crnt_node == NULL)
+		{
+			fprintf(stderr, err_msg, ln);
+			exit(EXIT_FAILURE);
+		}
+		while (crnt_node->next != NULL)
+			crnt_node = crnt_node->next;
+		/* check if it's the only element */
+		if (crnt_node->prev == NULL)
+		{
+			free(crnt_node);
+			*stack = NULL;
+		}
+		else
+		{
+			prev_node = crnt_node->prev;
+			prev_node->next = NULL;
+			free(crnt_node);
+		}
+	}
+}
+
+
+
+/**
  * swap_instr - swap the top two elements of the stack.
  * @stack: the stack.
  * @ln: line number
@@ -50,7 +115,12 @@ void add_instr(stack_t **stack, unsigned int ln)
 	stack_t *curr_node, *prev_node;
 	char *err_msg = "L%u: can't add, stack too short\n";
 
-	if (stack != NULL)
+	if ((stack == NULL) || (*stack == NULL))
+	{
+		fprintf(stderr, err_msg, ln);
+		exit(EXIT_FAILURE);
+	}
+	if (*stack != NULL)
 	{
 		curr_node = *stack;
 		while (curr_node->next != NULL)
@@ -65,18 +135,4 @@ void add_instr(stack_t **stack, unsigned int ln)
 		prev_node->next = NULL;
 		free(curr_node);
 	}
-}
-
-
-
-/**
- * nop_instr - does nothing.
- * @stack: plates.
- * @ln: linoleum
- * Return: nay
- */
-void nop_instr(stack_t **stack, unsigned int ln)
-{
-	(void)stack;
-	(void)ln;
 }

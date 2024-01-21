@@ -28,6 +28,7 @@ pop
 pall
 add
 pall
+swap
 nop
             nop
 	    	nop
@@ -38,6 +39,7 @@ nop
 			add
 			pall
 			pop
+		swap
 			add
 			pall
 			pall

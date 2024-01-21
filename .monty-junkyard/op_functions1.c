@@ -91,6 +91,21 @@ void pint_instr(stack_t **stack, unsigned int ln)
 
 
 /**
+ * nop_instr - does nothing.
+ * @stack: plates.
+ * @ln: linoleum
+ * Return: nay
+ */
+void nop_instr(stack_t **stack, unsigned int ln)
+{
+	(void)stack;
+	(void)ln;
+}
+
+
+
+
+/**
  * pop_instr - remove top item from a stack.
  * @stack: stack.
  * @ln: line number.
@@ -100,8 +115,6 @@ void pop_instr(stack_t **stack, unsigned int ln)
 {
 	stack_t *crnt_node, *prev_node;
 	char *err_msg = "L%u: can't pop an empty stack\n";
-
-	printf("about to pop stack...\n");
 
 	if (stack != NULL)
 	{
@@ -113,10 +126,17 @@ void pop_instr(stack_t **stack, unsigned int ln)
 		}
 		while (crnt_node->next != NULL)
 			crnt_node = crnt_node->next;
-		prev_node = crnt_node->prev;
-		prev_node->next = NULL;
-		free(crnt_node);
+		/* check if it's the only element */
+		if (crnt_node->prev == NULL)
+		{
+			free(crnt_node);
+			*stack = NULL;
+		}
+		else
+		{
+			prev_node = crnt_node->prev;
+			prev_node->next = NULL;
+			free(crnt_node);
+		}
 	}
-
-	printf("stack popped\n");
 }

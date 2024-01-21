@@ -33,7 +33,7 @@ void read_from_file(stack_t *instr_stack, FILE *fobj)
 			continue;
 		nlinestrip(&cr_line);
 		blank_scrub(&cr_line);
-		printf("***\nline %u\n\t%s\n", line_num, cr_line); /* d */
+		/* printf("***\nline %u\n\t%s\n", line_num, cr_line); */
 		line_tok = make_tokens(cr_line, BLANK);
 		if (line_tok == NULL)
 			continue;

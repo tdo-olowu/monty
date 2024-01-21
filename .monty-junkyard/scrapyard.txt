@@ -1,3 +1,49 @@
+
+Basically, what happens if there's only one element in the stack?
+
+void pop_instr(stack_t **stack, unsigned int ln)
+{
+    stack_t *crnt_node, *prev_node;
+    char *err_msg = "L%u: can't pop an empty stack\n";
+
+    printf("about to pop stack...\n");
+
+    if (stack != NULL && *stack != NULL) // Check if stack and *stack are not NULL
+    {
+        crnt_node = *stack;
+
+        // Check if the stack has only one element
+        if (crnt_node->next == NULL)
+        {
+            free(crnt_node);
+            *stack = NULL; // Set the stack to NULL after popping the only element
+            printf("stack popped\n");
+            return;
+        }
+
+        // Iterate to the last node
+        while (crnt_node->next != NULL)
+            crnt_node = crnt_node->next;
+
+        prev_node = crnt_node->prev;
+
+        if (prev_node != NULL) // Check if prev_node is not NULL before accessing its members
+            prev_node->next = NULL;
+
+        free(crnt_node);
+        printf("stack popped\n");
+    }
+    else
+    {
+        fprintf(stderr, err_msg, ln);
+        exit(EXIT_FAILURE);
+    }
+}
+
+
+
+
+
 /**
  * read_line - read opcodes
  * @buf: pointer to the input buffer
